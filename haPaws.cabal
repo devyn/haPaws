@@ -49,12 +49,17 @@ cabal-version:       >=1.10
 library
   -- Modules exposed by the library.
   exposed-modules:     Language.HaPaws.Hello
+                 ,     Language.HaPaws.CPaws
 
   -- Modules included in the library, but not exposed.
   --other-modules:       
 
   -- Other library packages from which modules are imported.
   build-depends:       base >= 4 && < 5
+               ,       text
+
+  -- LANGUAGE extensions used by modules in this package.
+  other-extensions:    OverloadedStrings
 
   -- Base language which the package is written in.
   default-language:    Haskell2010
@@ -71,6 +76,7 @@ executable haPaws
   
   -- Other library packages from which modules are imported.
   build-depends:       base >= 4 && < 5
+               ,       text
                ,       haPaws
   
   -- Directories containing source files.
@@ -79,13 +85,17 @@ executable haPaws
   -- Base language which the package is written in.
   default-language:    Haskell2010
 
+  -- LANGUAGE extensions used by modules in this package.
+  other-extensions:    OverloadedStrings
+
 test-suite spec-haPaws
   type:                exitcode-stdio-1.0
   main-is:             spec-haPaws.hs
   build-depends:       base >= 4 && < 5
-               ,       Cabal
+               ,       text
                ,       hspec
                ,       QuickCheck >=2 && <3
                ,       haPaws
 
   default-language:    Haskell2010
+  other-extensions:    OverloadedStrings
