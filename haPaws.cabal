@@ -50,13 +50,16 @@ library
   -- Modules exposed by the library.
   exposed-modules:     Language.HaPaws.Hello
                  ,     Language.HaPaws.CPaws
+                 ,     Language.HaPaws.Data
 
   -- Modules included in the library, but not exposed.
   --other-modules:       
 
   -- Other library packages from which modules are imported.
   build-depends:       base >= 4 && < 5
+               ,       containers
                ,       text
+               ,       simple-atom
 
   -- LANGUAGE extensions used by modules in this package.
   other-extensions:    OverloadedStrings
@@ -76,7 +79,9 @@ executable haPaws
   
   -- Other library packages from which modules are imported.
   build-depends:       base >= 4 && < 5
+               ,       containers
                ,       text
+               ,       simple-atom
                ,       haPaws
   
   -- Directories containing source files.
@@ -92,7 +97,9 @@ test-suite spec-haPaws
   type:                exitcode-stdio-1.0
   main-is:             spec-haPaws.hs
   build-depends:       base >= 4 && < 5
+               ,       containers
                ,       text
+               ,       simple-atom
                ,       hspec
                ,       QuickCheck >=2 && <3
                ,       haPaws
