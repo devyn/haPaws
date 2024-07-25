@@ -18,12 +18,12 @@ spec = describe "Language.HaPaws.CPaws" $ do
       map fst (lex "     ") `shouldContain` [Whitespace]
 
     it "analyzes a single identifier" $ do
-      map fst (lex "Hello") `shouldBe` [Symbol "Hello"]
+      map fst (lex "Hello") `shouldBe` [SymbolToken "Hello"]
 
-    it "analyzes multiple identifiers" $ do
+    it "analyzes multiple labels" $ do
       let tokens = map fst (lex "Hello world")
-      head tokens `shouldBe` Symbol "Hello"
-      last tokens `shouldBe` Symbol "world"
+      head tokens `shouldBe` SymbolToken "Hello"
+      last tokens `shouldBe` SymbolToken "world"
 
     it "preserves whitespace and groups it" $ do
       let tokens = map fst (lex "Hello world")
@@ -34,27 +34,28 @@ spec = describe "Language.HaPaws.CPaws" $ do
       head tokens `shouldBe` Whitespace
       last tokens `shouldBe` Whitespace
 
-    it "analyzes symbols in plain ASCII double quotes" $ do
+    it "analyzes labels in plain ASCII double quotes" $ do
       map fst (lex "\"Hello world\"") `shouldBe`
-        [Quote, Symbol "Hello world", Quote]
+        [Quote, SymbolToken "Hello world", Quote]
 
-    it "analyzes symbols in fancy left and right double quotes" $ do
+    it "analyzes labels in fancy left and right double quotes" $ do
       map fst (lex "“Hello world”") `shouldBe`
-        [LeftQuote, Symbol "Hello world", RightQuote]
+        [LeftQuote, SymbolToken "Hello world", RightQuote]
 
     it "analyzes delimited subexpressions" $ do
       map fst (lex "(Hello world)") `shouldBe`
-        [LeftParen, Symbol "Hello", Whitespace, Symbol "world", RightParen]
+        [LeftParen, SymbolToken "Hello", Whitespace, SymbolToken "world"
+        ,RightParen]
 
     it "analyzes execution literals" $ do
       map fst (lex "{Hello world}") `shouldBe`
-        [LeftCurlyBrace, Symbol "Hello", Whitespace, Symbol "world"
+        [LeftCurlyBrace, SymbolToken "Hello", Whitespace, SymbolToken "world"
         ,RightCurlyBrace]
 
     it "analyzes nested subexpressions and execution literals" $ do
       map fst (lex "{Hello ({world})}") `shouldBe`
-        [LeftCurlyBrace, Symbol "Hello", Whitespace, LeftParen
-        ,LeftCurlyBrace, Symbol "world", RightCurlyBrace, RightParen
+        [LeftCurlyBrace, SymbolToken "Hello", Whitespace, LeftParen
+        ,LeftCurlyBrace, SymbolToken "world", RightCurlyBrace, RightParen
         ,RightCurlyBrace]
 
     it "records line numbers for each token" $ do
@@ -79,27 +80,27 @@ spec = describe "Language.HaPaws.CPaws" $ do
       let tokens = map fst . lex $ "   Hello\nmy \"dog, Tom\" " `Text.append`
                                    "{is {actually}} \n(a “prince”) "
       tokens `shouldBe` [Whitespace
-                        ,Symbol "Hello"
+                        ,SymbolToken "Hello"
                         ,Whitespace
-                        ,Symbol "my"
+                        ,SymbolToken "my"
                         ,Whitespace
                         ,Quote
-                        ,Symbol "dog, Tom"
+                        ,SymbolToken "dog, Tom"
                         ,Quote
                         ,Whitespace
                         ,LeftCurlyBrace
-                        ,Symbol "is"
+                        ,SymbolToken "is"
                         ,Whitespace
                         ,LeftCurlyBrace
-                        ,Symbol "actually"
+                        ,SymbolToken "actually"
                         ,RightCurlyBrace
                         ,RightCurlyBrace
                         ,Whitespace
                         ,LeftParen
-                        ,Symbol "a"
+                        ,SymbolToken "a"
                         ,Whitespace
                         ,LeftQuote
-                        ,Symbol "prince"
+                        ,SymbolToken "prince"
                         ,RightQuote
                         ,RightParen
                         ,Whitespace]
